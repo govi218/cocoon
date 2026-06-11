@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      network: host
     image: ghcr.io/haileyok/cocoon:latest
     container_name: cocoon-init-keys
     volumes:
@@ -26,6 +27,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      network: host
     image: ghcr.io/haileyok/cocoon:latest
     container_name: cocoon-pds
     network_mode: host
@@ -86,6 +88,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      network: host
     image: ghcr.io/haileyok/cocoon:latest
     container_name: cocoon-create-invite
     network_mode: host
