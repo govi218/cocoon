@@ -12,7 +12,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ghcr.io/haileyok/cocoon:latest
+      network: host
+    image: cocoon:local
     container_name: cocoon-init-keys
     volumes:
       - ./keys:/keys
@@ -33,13 +34,14 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ghcr.io/haileyok/cocoon:latest
+      network: host
+    image: cocoon:local
     container_name: cocoon-pds
     depends_on:
       init-keys:
         condition: service_completed_successfully
     ports:
-      - "127.0.0.1:8080:8080"
+      - "127.0.0.1:3001:3001"
     volumes:
       - ./data:/data/cocoon
       - ./keys/rotation.key:/keys/rotation.key:ro
@@ -56,7 +58,7 @@ services:
       COCOON_SESSION_SECRET: ${COCOON_SESSION_SECRET}
 
       # Server configuration
-      COCOON_ADDR: ":8080"
+      COCOON_ADDR: ":3001"
       COCOON_DB_TYPE: ${COCOON_DB_TYPE:-sqlite}
       COCOON_DB_NAME: ${COCOON_DB_NAME:-/data/cocoon/cocoon.db}
       COCOON_DATABASE_URL: ${COCOON_DATABASE_URL:-}
@@ -84,7 +86,7 @@ services:
       COCOON_FALLBACK_PROXY: ${COCOON_FALLBACK_PROXY:-}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/xrpc/_health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3001/xrpc/_health"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -94,7 +96,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: ghcr.io/haileyok/cocoon:latest
+      network: host
+    image: cocoon:local
     container_name: cocoon-create-invite
     network_mode: "service:cocoon"
     volumes:
