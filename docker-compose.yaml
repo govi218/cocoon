@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       network: host
-    image: ghcr.io/haileyok/cocoon:latest
+    image: cocoon:local
     container_name: cocoon-init-keys
     volumes:
       - ./keys:/keys
@@ -50,7 +50,7 @@ services:
       COCOON_SESSION_SECRET: ${COCOON_SESSION_SECRET}
 
       # Server configuration
-      COCOON_ADDR: ":8080"
+      COCOON_ADDR: ":3000"
       COCOON_DB_TYPE: ${COCOON_DB_TYPE:-sqlite}
       COCOON_DB_NAME: ${COCOON_DB_NAME:-/data/cocoon/cocoon.db}
       COCOON_DATABASE_URL: ${COCOON_DATABASE_URL:-}
@@ -78,7 +78,7 @@ services:
       COCOON_FALLBACK_PROXY: ${COCOON_FALLBACK_PROXY:-}
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/xrpc/_health"]
+      test: ["CMD", "curl", "-f", "http://localhost:3000/xrpc/_health"]
       interval: 30s
       timeout: 10s
       retries: 3
