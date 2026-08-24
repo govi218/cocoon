@@ -109,23 +109,6 @@ services:
     entrypoint: ["/bin/sh", "/create-initial-invite.sh"]
     restart: "no"
 
-  caddy:
-    image: caddy:2-alpine
-    container_name: cocoon-caddy
-    network_mode: host
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    restart: unless-stopped
-    environment:
-      COCOON_HOSTNAME: ${COCOON_HOSTNAME}
-      CADDY_ACME_EMAIL: ${COCOON_CONTACT_EMAIL:-}
-
 volumes:
   data:
-    driver: local
-  caddy_data:
-    driver: local
-  caddy_config:
     driver: local
